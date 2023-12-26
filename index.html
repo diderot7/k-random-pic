@@ -91,7 +91,7 @@
             setErrorMessage("빈 값은 입력이 불가합니다.");
             return;
           }
-          updateMainCat();
+          updateMainCat(value);
         }
 
         return (
@@ -142,6 +142,13 @@
         const CAT1 = "https://cataas.com/cat/HSENVDU4ZMqy7KQ0/says/react";
         const CAT2 = "https://cataas.com/cat/BxqL2EjFmtxDkAm2/says/inflearn";
         const CAT3 = "https://cataas.com/cat/18MD6byVC1yKGpXp/says/JavaScript";
+        // const imgArray = [
+        //   "emotion1.png",
+        //   "emotion2.png",
+        //   "emotion3.png",
+        //   "emotion4.png",
+        //   "emotion5.png",
+        // ];
 
         const [counter, setCounter] = React.useState(
           jsonLocalStorage.getItem("counter") || 1
@@ -150,8 +157,10 @@
         const [favorites, setFavorites] = React.useState(
           jsonLocalStorage.getItem("favorites") || []
         );
-        function updateMainCat() {
-          setImages(CAT3);
+        async function updateMainCat(value) {
+          const newCat = await fetchCat(value);
+
+          setImages(newCat);
           const nextCounter = counter + 1;
           setCounter(nextCounter);
           jsonLocalStorage.setItem("counter", nextCounter);
@@ -161,6 +170,14 @@
           setFavorites(nextFavorites);
           jsonLocalStorage.setItem("favorites", nextFavorites);
         }
+
+        // fetch("https://dog.ceo/api/breeds/image/random?json=true")
+        //   .then(function (response) {
+        //     return response.json();
+        //   })
+        //   .then(function (myJson) {
+        //     console.log(JSON.stringify(myJson));
+        //   });
 
         return (
           <div>
